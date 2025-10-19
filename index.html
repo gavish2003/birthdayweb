@@ -13,8 +13,19 @@
   --glass: rgba(255,255,255,0.03);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:Inter, Poppins, system-ui; background: radial-gradient(ellipse at top,#071025 0%,var(--bg1) 40%, var(--bg2) 100%); color:#fff; overflow-x:hidden; scroll-behavior:smooth;}
-#stars{position:fixed; inset:0; z-index:0; pointer-events:none;}
+body{font-family:Inter, Poppins, system-ui; background: radial-gradient(ellipse at top,#071025 0%,var(--bg1) 40%, var(--bg2) 100%); color:#fff; overflow-x:hidden; 
+  /* scroll-behavior:smooth; */
+}
+#stars {
+  will-change: transform;
+  transform: translateZ(0);
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+}
+
+
+
 /* Navbar - Absolute for all devices */
 nav {
   position: absolute; /* absolute instead of fixed */
@@ -84,7 +95,11 @@ section{padding:90px 18px; position:relative; z-index:2;}
 .glass{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:24px; border-radius:16px; box-shadow: 0 8px 40px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.03); max-width:1100px; margin:18px auto;}
 .countdown{font-size:1.1rem; margin-top:12px; color:#ffeef6;}
 /* MEMORIES SLIDER */
-.cylinder-slider {perspective: 1200px;width: 100%;max-width: 900px;margin: auto;overflow: visible;height: 340px;position: relative;}
+.cylinder-slider {
+  min-height: 340px;
+  overflow: hidden;
+}
+
 .cylinder-slides {width: 100%;height: 100%;display: flex;justify-content: center;transform-style: preserve-3d;transition: transform 1s ease;}
 .cylinder-slides img {width: 250px;border-radius: 16px;position: absolute; top: 0; left: 50%; transform-origin: center center; transition: transform 0.8s ease, opacity 0.8s ease; cursor: pointer; opacity: 0.5;}
 .cylinder-slides img.center {transform: translateX(-50%) translateZ(120px) rotateY(0deg) scale(1.2); opacity: 1; z-index: 5;}
@@ -147,8 +162,23 @@ section{padding:90px 18px; position:relative; z-index:2;}
 .heart:nth-child(4) { left: 70%; animation-delay: 6s; }
 .heart:nth-child(5) { left: 90%; animation-delay: 8s; }
 .song-playing {background: radial-gradient(circle at bottom, #2b0b3d, #0f0f1f);}
-.titles{ margin-left: 470px; color: #dbb7c3; text-shadow: 0 0 15px #ff4da6;}
-.message{max-width:780px; margin: 12px auto;margin-left: 200px; color:#ffeef6; line-height:1.6; text-align:center;}
+.titles {
+  color: #dbb7c3;
+  text-shadow: 0 0 15px #ff4da6;
+  text-align: center;        /* centers heading */
+  margin: 0 auto 20px;       /* removes weird left offset */
+  font-size: 2rem;
+}
+
+.message {
+  max-width: 780px;
+  margin: 0 auto;            /* centers horizontally */
+  color: #ffeef6;
+  line-height: 1.7;
+  text-align: center;
+  font-size: 1.1rem;
+  padding: 0 15px;           /* adds a little spacing for mobile */
+}
 footer{padding:40px 18px 80px; text-align:center; opacity:0.85;}
 .memory-video {width: 80%; max-width: 700px; margin: 40px auto; text-align: center; position: relative;}
 .memory-video video {width: 40%; margin-top: 180px; border-radius: 20px; box-shadow: 0 0 25px rgba(255, 100, 150, 0.5); transition: transform 0.4s ease, box-shadow 0.4s ease;}
@@ -158,7 +188,22 @@ footer{padding:40px 18px 80px; text-align:center; opacity:0.85;}
 /* ======================== MOBILE RESPONSIVENESS ======================== */
 @media (max-width: 768px) {
   body {font-size:14px;}
-  nav {flex-wrap: wrap; gap:8px; padding:6px 10px; left:50%; transform:translateX(-50%);}
+  nav {
+    position: fixed; /* keeps it visible while scrolling */
+    top: 0;
+    left: 0;
+    width: 100%;
+    justify-content: center;
+    background: rgba(15,23,36,0.95);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    padding: 10px 0;
+    border-radius: 0;
+    backdrop-filter: none;
+    z-index: 999;
+  }
+   nav a {
+    padding: 8px 10px;
+  }
   h1 {font-size:2rem;}
   .typewriter {font-size:1.2rem; max-width:90%;}
   .sub {font-size:0.9rem;}
@@ -177,6 +222,23 @@ footer{padding:40px 18px 80px; text-align:center; opacity:0.85;}
   .memory-video video {width:80%; margin-top:120px;}
   .titles {margin-left:0; font-size:1.5rem;}
   .message {margin-left:0; max-width:90%;}
+
+  /* Surprise Overlay Mobile */
+  #surpriseOverlay {
+    padding: 20px;
+  }
+  #birthdayText {
+    font-size:2rem;
+    max-width:90%;
+    text-align:center;
+  }
+  #stopSurpriseBtn {
+    padding:10px 16px;
+    font-size:1rem;
+  }
+  .hearts .heart {
+    font-size:18px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -188,11 +250,19 @@ footer{padding:40px 18px 80px; text-align:center; opacity:0.85;}
   .cake-container {transform:scale(0.7);}
   .song-container iframe {height:200px;}
   .memory-video video {width:100%; margin-top:80px;}
+
+  /* Surprise Overlay Small Mobile */
+  #birthdayText {
+    font-size:1.5rem;
+  }
+  .hearts .heart {
+    font-size:14px;
+  }
 }
- 
+
 </style>
 </head>
-<body>
+<body style="overflow-x:hidden; scroll-behavior:smooth;">
 
 <canvas id="stars"></canvas>
 
@@ -223,33 +293,33 @@ footer{padding:40px 18px 80px; text-align:center; opacity:0.85;}
   <h2 class="title">💖 Our Sweet Memories 💖</h2>
   <div class="cylinder-slider">
     <div class="cylinder-slides">
-    <img src="WhatsApp Image 2025-10-15 at 9.59.26 PM.jpeg" alt="Memory 1">
-      <img src="WhatsApp Image 2025-10-15 at 9.59.36 PM.jpeg" alt="Memory 2">
-      <img src="WhatsApp Image 2025-10-15 at 9.59.35 PM.jpeg" alt="Memory 3">
-      <img src="WhatsApp Image 2025-10-15 at 9.59.33 PM (1).jpeg" alt="Memory 4">
-      <img src="WhatsApp Image 2025-10-15 at 9.59.32 PM.jpeg" alt="Memory 5">
-      <img src="WhatsApp Image 2025-10-15 at 9.59.31 PM.jpeg" alt="Memory 6">
-      <img src="WhatsApp Image 2025-10-15 at 9.59.30 PM.jpeg" alt="Memory 7">
-      <img src="WhatsApp Image 2025-10-15 at 9.59.29 PM.jpeg" alt="Memory 8">
-      <img src="WhatsApp Image 2025-10-15 at 9.59.28 PM.jpeg" alt="Memory 9">
-      <img src="WhatsApp Image 2025-10-15 at 9.59.27 PM.jpeg" alt="Memory 10">
-      <img src="WhatsApp Image 2025-10-15 at 9.59.34 PM.jpeg" alt="Memory 11">
-      <img src="WhatsApp Image 2025-10-15 at 9.59.33 PM.jpeg" alt="Memory 12">
-      <img src="WhatsApp Image 2025-10-19 at 10.38.22 AM.jpeg" alt="Memory 13">
-      <img src="WhatsApp Image 2025-10-19 at 10.38.21 AM.jpeg" alt="Memory 14">
-      <img src="WhatsApp Image 2025-10-19 at 10.38.20 AM.jpeg" alt="Memory 15">
-      <img src="WhatsApp Image 2025-10-19 at 10.36.28 AM.jpeg" alt="Memory 16">
-      <img src="WhatsApp Image 2025-10-19 at 10.36.27 AM (1).jpeg" alt="Memory 17">
-      <img src="WhatsApp Image 2025-10-19 at 10.36.27 AM.jpeg" alt="Memory 18">
-      <img src="WhatsApp Image 2025-10-19 at 10.36.26 AM.jpeg" alt="Memory 19">
-      <img src="WhatsApp Image 2025-10-19 at 10.36.25 AM.jpeg" alt="Memory 20">
+    <img src="c:\Users\Public\Downloads\WhatsApp Image 2025-10-15 at 9.59.26 PM.jpeg" alt="Memory 1">
+      <img src="c:\Users\Public\Downloads\WhatsApp Image 2025-10-15 at 9.59.36 PM.jpeg" alt="Memory 2">
+      <img src="c:\Users\Public\Downloads\WhatsApp Image 2025-10-15 at 9.59.35 PM.jpeg" alt="Memory 3">
+      <img src="c:\Users\Public\Downloads\WhatsApp Image 2025-10-15 at 9.59.33 PM (1).jpeg" alt="Memory 4">
+      <img src="c:\Users\Public\Downloads\WhatsApp Image 2025-10-15 at 9.59.32 PM.jpeg" alt="Memory 5">
+      <img src="c:\Users\Public\Downloads\WhatsApp Image 2025-10-15 at 9.59.31 PM.jpeg" alt="Memory 6">
+      <img src="c:\Users\Public\Downloads\WhatsApp Image 2025-10-15 at 9.59.30 PM.jpeg" alt="Memory 7">
+      <img src="c:\Users\Public\Downloads\WhatsApp Image 2025-10-15 at 9.59.29 PM.jpeg" alt="Memory 8">
+      <img src="c:\Users\Public\Downloads\WhatsApp Image 2025-10-15 at 9.59.28 PM.jpeg" alt="Memory 9">
+      <img src="c:\Users\Public\Downloads\WhatsApp Image 2025-10-15 at 9.59.27 PM.jpeg" alt="Memory 10">
+      <img src="c:\Users\Public\Downloads\WhatsApp Image 2025-10-15 at 9.59.34 PM.jpeg" alt="Memory 11">
+      <img src="c:\Users\Public\Downloads\WhatsApp Image 2025-10-15 at 9.59.33 PM.jpeg" alt="Memory 12">
+      <img src="c:\Users\Public\Downloads\WhatsApp Image 2025-10-19 at 10.38.22 AM.jpeg" alt="Memory 13">
+      <img src="c:\Users\Public\Downloads\WhatsApp Image 2025-10-19 at 10.38.21 AM.jpeg" alt="Memory 14">
+      <img src="c:\Users\Public\Downloads\WhatsApp Image 2025-10-19 at 10.38.20 AM.jpeg" alt="Memory 15">
+      <img src="c:\Users\Public\Downloads\WhatsApp Image 2025-10-19 at 10.36.28 AM.jpeg" alt="Memory 16">
+      <img src="c:\Users\Public\Downloads\WhatsApp Image 2025-10-19 at 10.36.27 AM (1).jpeg" alt="Memory 17">
+      <img src="c:\Users\Public\Downloads\WhatsApp Image 2025-10-19 at 10.36.27 AM.jpeg" alt="Memory 18">
+      <img src="c:\Users\Public\Downloads\WhatsApp Image 2025-10-19 at 10.36.26 AM.jpeg" alt="Memory 19">
+      <img src="c:\Users\Public\Downloads\WhatsApp Image 2025-10-19 at 10.36.25 AM.jpeg" alt="Memory 20">
 
     </div>
   </div>
   <!-- Memory Video -->
 <div class="memory-video">
   <video controls autoplay muted loop poster="images/video-thumbnail.jpg">
-    <source src="\WhatsApp Video 2025-10-19 at 10.36.25 AM.mp4" type="video/mp4">
+    <source src="c:\Users\Public\Downloads\WhatsApp Video 2025-10-19 at 10.36.25 AM.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
   <p class="video-caption">💞 Our Special Memory 💞</p>
@@ -265,7 +335,7 @@ footer{padding:40px 18px 80px; text-align:center; opacity:0.85;}
     <div class="nick">Miss gayab</div>
     <div class="nick">Avi</div>
   </div>
-  <audio id="bgMusic" src="love.mp3" loop></audio>
+  <audio id="bgMusic" src="c:\Users\Public\Downloads\love.mp3" loop></audio>
 
 </section>
 
@@ -384,7 +454,13 @@ for(let i=0;i<200;i++){
   starsArray.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*1.2});
 }
 function drawStars(){ctx.clearRect(0,0,canvas.width,canvas.height);for(let s of starsArray){ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle="#fff";ctx.fill();}}
-setInterval(drawStars,50);
+function animateStars() {
+  drawStars();
+  requestAnimationFrame(animateStars);
+}
+animateStars();
+
+
 window.addEventListener('resize',()=>{canvas.width=window.innerWidth; canvas.height=window.innerHeight;})
 
 /* TYPEWRITER */
@@ -406,13 +482,14 @@ let cylIndex = 0;
 function updateCylinder() {
   const total = cylSlides.length;
   cylSlides.forEach((img, i) => {
-    img.className = ''; // reset
+    img.classList.remove('center', 'side-left', 'side-right', 'side-back');
     if(i === cylIndex) img.classList.add('center');
     else if(i === (cylIndex-1+total)%total) img.classList.add('side-left');
     else if(i === (cylIndex+1)%total) img.classList.add('side-right');
     else img.classList.add('side-back');
   });
 }
+
 
 // Initial display
 updateCylinder();
@@ -605,6 +682,11 @@ const music = document.getElementById("bgMusic");
 const toggleBtn = document.getElementById("musicToggle");
 let isPlaying = false;
 
+window.addEventListener('touchmove', function (e) {
+  e.stopPropagation();
+}, { passive: true });
+
+
 toggleBtn.addEventListener("click", function() {
   if (isPlaying) {
     music.pause();
@@ -619,10 +701,4 @@ toggleBtn.addEventListener("click", function() {
 
 </script>
 </body>
-
 </html>
-
-
-
-
-
